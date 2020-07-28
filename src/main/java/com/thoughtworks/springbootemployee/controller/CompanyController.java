@@ -130,17 +130,11 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    public Company deleteCompanyByID(@PathVariable int id) {
+    public Company deleteAllEmployeesOfTheCompanyByID(@PathVariable int id) {
         List<Company> companies = initCompanies();
-        int index = 0;
-        for(Company company : companies){
-            if(company.getId() == id){
-                index = companies.indexOf(company);
-            }
-        }
-        Company company = companies.get(index);
-        companies.remove(index);
-
-        return company;
+        Company thisCompany = companies.stream().filter(company -> company.getId() == id).findFirst().get();
+//        thisCompany.getEmployees().clear();
+        thisCompany.setEmployees(new ArrayList<Employee>());
+        return thisCompany;
     }
 }
