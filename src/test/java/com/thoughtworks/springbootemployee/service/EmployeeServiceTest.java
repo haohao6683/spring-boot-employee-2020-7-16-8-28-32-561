@@ -91,4 +91,15 @@ public class EmployeeServiceTest {
         //then
         Assertions.assertEquals(employee.getId(), returnValue.getId());
     }
+
+    @Test
+    void should_return_updated_employee_when_update_employee_given_employee() {
+        //given
+        Employee employee = new Employee(6, 28, "male", "Draymond6", 20);
+        when(repository.updateEmployeeByID(6,employee)).thenReturn(employee);
+        //when
+        Employee returnValue = employeeService.updateEmployeeByID(6,employee);
+        //then
+        Assertions.assertEquals("male", returnValue.getGender());
+    }
 }
