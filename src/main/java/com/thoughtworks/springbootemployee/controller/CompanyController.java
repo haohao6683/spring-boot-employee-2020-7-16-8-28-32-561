@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
+    //todo
     private List<Company> initCompanies() {
         List<Company> companies = new ArrayList<>();
         companies.add(
@@ -133,8 +134,8 @@ public class CompanyController {
     public Company deleteAllEmployeesOfTheCompanyByID(@PathVariable int id) {
         List<Company> companies = initCompanies();
         Company thisCompany = companies.stream().filter(company -> company.getId() == id).findFirst().get();
-//        thisCompany.getEmployees().clear();
-        thisCompany.setEmployees(new ArrayList<Employee>());
+        thisCompany.getEmployees().clear();
+//        thisCompany.setEmployees(new ArrayList<Employee>());
         return thisCompany;
     }
 }

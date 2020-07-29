@@ -55,13 +55,11 @@ public class EmployeeController {
 
         List<Employee> employeeList = initEmployeeList();
         int index = 0;
-        //todo iterator
         for(Employee employee : employeeList){
             if(employee.getId() == id){
                 index = employeeList.indexOf(employee);
             }
         }
-        //todo update each pro
         employeeList.remove(index);
         employeeList.add(newEmployee);
 
