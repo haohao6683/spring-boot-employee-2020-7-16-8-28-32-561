@@ -49,8 +49,7 @@ public class EmployeeController {
 
     @PostMapping
     public Employee addEmployee(@RequestBody Employee newEmployee) {
-        getEmployeeList().add(newEmployee);
-        return getEmployeeList().stream().filter(employee -> employee.getId() == newEmployee.getId()).findFirst().orElse(new Employee());
+        return employeeService.addEmployee(newEmployee);
     }
 
     @PutMapping("/{id}")

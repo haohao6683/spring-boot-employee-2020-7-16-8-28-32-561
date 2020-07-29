@@ -5,10 +5,9 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class EmployeeServiceImpl {
+public class EmployeeServiceImpl implements EmployeeService{
 
     private EmployeeRepository repository;
 
@@ -16,19 +15,28 @@ public class EmployeeServiceImpl {
         this.repository = repository;
     }
 
+    @Override
     public List<Employee> getEmployeeList() {
         return repository.getAllData();
     }
 
+    @Override
     public Employee getEmployeeById(int id) {
-        return getEmployeeList().stream().filter(employee -> employee.getId() == id).findFirst().orElse(null);
+        return repository.getEmployeeById(id);
     }
 
+    @Override
     public List<Employee> getEmployeeByPage(int page, int pageSize) {
-        return getEmployeeList().stream().skip((page-1)*pageSize).limit(pageSize).collect(Collectors.toList());
+        return repository.getEmployeeByPage(page,pageSize);
     }
 
+    @Override
     public List<Employee> getEmployeeByGender(String gender) {
-        return getEmployeeList().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+        return repository.getEmployeeByGender(gender);
+    }
+
+    @Override
+    public Employee addEmployee(Employee employee) {
+        return repository.addEmployee(employee);
     }
 }
