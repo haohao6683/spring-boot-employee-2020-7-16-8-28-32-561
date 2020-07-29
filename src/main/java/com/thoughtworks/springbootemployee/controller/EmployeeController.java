@@ -44,7 +44,7 @@ public class EmployeeController {
 
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeeByGender(String gender) {
-        return getEmployeeList().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+        return employeeService.getEmployeeByGender(gender);
     }
 
     @PostMapping

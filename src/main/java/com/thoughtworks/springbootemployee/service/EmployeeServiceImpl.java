@@ -27,4 +27,8 @@ public class EmployeeServiceImpl {
     public List<Employee> getEmployeeByPage(int page, int pageSize) {
         return getEmployeeList().stream().skip((page-1)*pageSize).limit(pageSize).collect(Collectors.toList());
     }
+
+    public List<Employee> getEmployeeByGender(String gender) {
+        return getEmployeeList().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+    }
 }
