@@ -59,17 +59,6 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     public Employee deleteEmployeeByID(@PathVariable int id) {
-
-        List<Employee> employeeList = initEmployeeList();
-        int index = 0;
-        for(Employee employee : employeeList){
-            if(employee.getId() == id){
-                index = employeeList.indexOf(employee);
-            }
-        }
-        Employee deletedEmployee = employeeList.get(index);
-        employeeList.remove(index);
-
-        return deletedEmployee;
+        return employeeService.deleteEmployeeByID(id);
     }
 }

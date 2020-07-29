@@ -31,4 +31,8 @@ public class EmployeeRepository {
     public Employee updateEmployeeByID(int id, Employee newEmployee) {
         return null;
     }
+
+    public Employee deleteEmployeeByID(int id) {
+        return null;
+    }
 }
