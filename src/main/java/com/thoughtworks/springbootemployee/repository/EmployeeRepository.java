@@ -27,4 +27,8 @@ public class EmployeeRepository {
     public Employee addEmployee(Employee employee) {
         return null;
     }
+
+    public Employee updateEmployeeByID(int id, Employee newEmployee) {
+        return null;
+    }
 }

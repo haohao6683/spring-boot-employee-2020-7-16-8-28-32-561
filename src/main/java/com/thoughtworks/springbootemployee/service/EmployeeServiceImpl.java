@@ -39,4 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee addEmployee(Employee employee) {
         return repository.addEmployee(employee);
     }
+
+    @Override
+    public Employee updateEmployeeByID(int id, Employee newEmployee) {
+        return repository.updateEmployeeByID(id,newEmployee);
+    }
 }
