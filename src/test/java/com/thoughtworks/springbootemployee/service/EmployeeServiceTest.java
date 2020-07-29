@@ -36,4 +36,13 @@ public class EmployeeServiceTest {
         Assertions.assertEquals(repository.getAllData().size(), employees.size());
     }
 
+    @Test
+    void should_return_employee_when_get_given_employeeId() {
+        //given
+        int id = 1;
+        //when
+        Employee employee = employeeService.getEmployeeById(id);
+        //then
+        Assertions.assertEquals(id,employee.getId());
+    }
 }
