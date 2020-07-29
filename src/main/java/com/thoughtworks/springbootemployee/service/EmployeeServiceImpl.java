@@ -18,4 +18,8 @@ public class EmployeeServiceImpl {
     public List<Employee> getEmployeeList() {
         return repository.getAllData();
     }
+
+    public Employee getEmployeeById(int id) {
+        return getEmployeeList().stream().filter(employee -> employee.getId() == id).findFirst().orElse(null);
+    }
 }
