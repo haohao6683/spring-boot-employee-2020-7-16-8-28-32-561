@@ -41,13 +41,13 @@ public class EmployeeController {
     public Employee getEmployeeByGender(String gender) {
         //todo "male"  orelse
         //todo screen all male employees
-        return getEmployeeList().stream().filter(employee -> employee.getGender().equals("male")).findFirst().get();
+        return getEmployeeList().stream().filter(employee -> employee.getGender().equals("male")).findFirst().orElse(new Employee());
     }
 
     @PostMapping
     public Employee addEmployee(@RequestBody Employee newEmployee) {
         getEmployeeList().add(newEmployee);
-        return getEmployeeList().stream().filter(employee -> employee.getId() == newEmployee.getId()).findFirst().get();
+        return getEmployeeList().stream().filter(employee -> employee.getId() == newEmployee.getId()).findFirst().orElse(new Employee());
     }
 
     @PutMapping("/{id}")
@@ -65,7 +65,7 @@ public class EmployeeController {
         employeeList.remove(index);
         employeeList.add(newEmployee);
 
-        return employeeList.stream().filter(employee -> employee.getId() == id).findFirst().get();
+        return employeeList.stream().filter(employee -> employee.getId() == id).findFirst().orElse(new Employee());
     }
 
     @DeleteMapping("/{id}")
