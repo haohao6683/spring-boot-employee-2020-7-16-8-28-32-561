@@ -2,6 +2,8 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -19,12 +21,12 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public Company findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public List<Company> getCompaniesByPage(int page, int pageSize) {
-        return repository.findAllByPage(page, pageSize);
+    public Page<Company> getCompaniesByPage(int page, int pageSize) {
+        return repository.findAll(PageRequest.of(page-1, pageSize));
     }
 
     @Override
@@ -33,12 +35,16 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company updateCompany(Company company) {
-        return repository.updateCompany(company);
+    public Company updateCompanyByID(Integer id, Company newCompany) {
+        Company company = this.findById(id);
+        company.setEmployees(newCompany.getEmployees());
+        company.setCompanyName(newCompany.getCompanyName());
+        company.setEmployeeNumber(newCompany.getEmployeeNumber());
+        return repository.save(company);
     }
 
     @Override
-    public Company deleteEmployeeByID(Integer id) {
-        return repository.deleteById(id);
+    public void deleteCompanyByID(Integer id) {
+        repository.deleteById(id);
     }
 }
