@@ -27,35 +27,27 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public Employee getEmployeeByID(@PathVariable int id) {
-
-        List<Employee> employeeList = initEmployeeList();
-
         //todo orelse
-        return employeeList.stream().filter(employee -> employee.getId() == id).findFirst().get();
+        return getEmployeeList().stream().filter(employee -> employee.getId() == id).findFirst().get();
     }
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getEmployeeListByPage(int page,int pageSize) {
-        List<Employee> employeeList = initEmployeeList();
         int startIndex = (page - 1) * pageSize;
-        return employeeList.subList(startIndex, startIndex + pageSize);
+        return getEmployeeList().subList(startIndex, startIndex + pageSize);
     }
 
     @GetMapping(params = {"gender"})
     public Employee getEmployeeByGender(String gender) {
-
-        List<Employee> employeeList = initEmployeeList();
-
         //todo "male"  orelse
         //todo screen all male employees
-        return employeeList.stream().filter(employee -> employee.getGender().equals("male")).findFirst().get();
+        return getEmployeeList().stream().filter(employee -> employee.getGender().equals("male")).findFirst().get();
     }
 
     @PostMapping
     public Employee addEmployee(@RequestBody Employee newEmployee) {
-        List<Employee> employeeList = initEmployeeList();
-        employeeList.add(newEmployee);
-        return employeeList.stream().filter(employee -> employee.getId() == newEmployee.getId()).findFirst().get();
+        getEmployeeList().add(newEmployee);
+        return getEmployeeList().stream().filter(employee -> employee.getId() == newEmployee.getId()).findFirst().get();
     }
 
     @PutMapping("/{id}")
