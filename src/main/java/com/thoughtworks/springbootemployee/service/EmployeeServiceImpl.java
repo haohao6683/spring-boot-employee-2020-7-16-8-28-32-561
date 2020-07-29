@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl {
@@ -21,5 +22,9 @@ public class EmployeeServiceImpl {
 
     public Employee getEmployeeById(int id) {
         return getEmployeeList().stream().filter(employee -> employee.getId() == id).findFirst().orElse(null);
+    }
+
+    public List<Employee> getEmployeeByPage(int page, int pageSize) {
+        return getEmployeeList().stream().skip((page-1)*pageSize).limit(pageSize).collect(Collectors.toList());
     }
 }
