@@ -11,8 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-
-    //todo
     private List<Company> initCompanies() {
         List<Company> companies = new ArrayList<>();
         companies.add(
