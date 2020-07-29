@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -38,8 +37,8 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employee> getEmployeeListByPage(int page,int pageSize) {
-        return employeeService.getEmployeeByPage(page,pageSize);
+    public List<Employee> getEmployeeListByPage(int page, int pageSize) {
+        return employeeService.getEmployeeByPage(page, pageSize);
     }
 
     @GetMapping(params = {"gender"})
@@ -54,7 +53,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public Employee updateEmployeeByID(@PathVariable int id, @RequestBody Employee newEmployee) {
-        return employeeService.updateEmployeeByID(id,newEmployee);
+        return employeeService.updateEmployeeByID(id, newEmployee);
     }
 
     @DeleteMapping("/{id}")

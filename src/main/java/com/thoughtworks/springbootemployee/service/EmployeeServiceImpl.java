@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository repository;
 
@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public List<Employee> getEmployeeByPage(int page, int pageSize) {
-        return repository.getEmployeeByPage(page,pageSize);
+        return repository.getEmployeeByPage(page, pageSize);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Employee updateEmployeeByID(int id, Employee newEmployee) {
-        return repository.updateEmployeeByID(id,newEmployee);
+        return repository.updateEmployeeByID(id, newEmployee);
     }
 
     @Override

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -17,7 +16,7 @@ public class EmployeeServiceTest {
     private EmployeeServiceImpl employeeService = new EmployeeServiceImpl(repository);
 
     @Test
-    void should_return_employees_when_get(){
+    void should_return_employees_when_get() {
         //given
         List<Employee> mockedEmployees = new ArrayList<>();
         mockedEmployees.add(new Employee(1, 28, "male", "Draymond1", 1000));
@@ -42,7 +41,7 @@ public class EmployeeServiceTest {
         //when
         Employee employee = employeeService.getEmployeeById(id);
         //then
-        Assertions.assertEquals(id,employee.getId());
+        Assertions.assertEquals(id, employee.getId());
     }
 
     @Test
@@ -61,7 +60,7 @@ public class EmployeeServiceTest {
         //when
         List<Employee> employees = employeeService.getEmployeeByPage(page, pageSize);
         //then
-        Assertions.assertEquals(pageSize,employees.size());
+        Assertions.assertEquals(pageSize, employees.size());
         Assertions.assertEquals(firstEmployeeIdInPage1, employees.get(0).getId());
     }
 
@@ -78,7 +77,7 @@ public class EmployeeServiceTest {
         //when
         List<Employee> employees = employeeService.getEmployeeByGender(gender);
         //then
-        Assertions.assertEquals(4,employees.size());
+        Assertions.assertEquals(4, employees.size());
     }
 
     @Test
@@ -96,9 +95,9 @@ public class EmployeeServiceTest {
     void should_return_updated_employee_when_update_employee_given_employee() {
         //given
         Employee employee = new Employee(6, 28, "male", "Draymond6", 20);
-        when(repository.updateEmployeeByID(6,employee)).thenReturn(employee);
+        when(repository.updateEmployeeByID(6, employee)).thenReturn(employee);
         //when
-        Employee returnValue = employeeService.updateEmployeeByID(6,employee);
+        Employee returnValue = employeeService.updateEmployeeByID(6, employee);
         //then
         Assertions.assertEquals("male", returnValue.getGender());
     }
