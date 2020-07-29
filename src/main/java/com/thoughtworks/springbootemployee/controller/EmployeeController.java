@@ -10,14 +10,14 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
     private List<Employee> initEmployeeList() {
-        List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(new Employee(1, 28, "male", "Draymond", 1000));
-        employeeList.add(new Employee(2, 38, "female", "Shao", 1000));
-        employeeList.add(new Employee(3, 38, "female", "Shao", 1000));
-        employeeList.add(new Employee(4, 38, "female", "Shao", 1000));
-        employeeList.add(new Employee(5, 38, "female", "Shao", 1000));
-        employeeList.add(new Employee(6, 38, "female", "Shao", 1000));
-        return employeeList;
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, 28, "male", "Draymond", 1000));
+        employees.add(new Employee(2, 38, "female", "Shao", 1000));
+        employees.add(new Employee(3, 38, "female", "Shao", 1000));
+        employees.add(new Employee(4, 38, "female", "Shao", 1000));
+        employees.add(new Employee(5, 38, "female", "Shao", 1000));
+        employees.add(new Employee(6, 38, "female", "Shao", 1000));
+        return employees;
     }
 
     @GetMapping
@@ -30,6 +30,7 @@ public class EmployeeController {
 
         List<Employee> employeeList = initEmployeeList();
 
+        //todo orelse
         return employeeList.stream().filter(employee -> employee.getId() == id).findFirst().get();
     }
 
@@ -45,6 +46,8 @@ public class EmployeeController {
 
         List<Employee> employeeList = initEmployeeList();
 
+        //todo "male"  orelse
+        //todo screen all male employees
         return employeeList.stream().filter(employee -> employee.getGender().equals("male")).findFirst().get();
     }
 
@@ -60,11 +63,13 @@ public class EmployeeController {
 
         List<Employee> employeeList = initEmployeeList();
         int index = 0;
+        //todo iterator
         for(Employee employee : employeeList){
             if(employee.getId() == id){
                 index = employeeList.indexOf(employee);
             }
         }
+        //todo update each pro
         employeeList.remove(index);
         employeeList.add(newEmployee);
 
