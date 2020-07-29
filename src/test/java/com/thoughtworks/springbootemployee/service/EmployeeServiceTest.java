@@ -73,4 +73,14 @@ public class EmployeeServiceTest {
             Assertions.assertEquals(gender,employee.getGender());
         }
     }
+
+    @Test
+    void should_return_employee_when_add_employees_given_employees() {
+        //given
+        Employee employee = new Employee(6, 28, "male", "Draymond6", 20);
+        //when
+        Employee returnValue = employeeService.addEmployee(employee);
+        //then
+        Assertions.assertEquals(employee.getId(), returnValue.getId());
+    }
 }
