@@ -3,7 +3,6 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -123,9 +122,9 @@ public class CompanyServiceTest {
                 )
         ));
         //when
-        Company company = companyService.findById(id);
+        List<Employee> employees= companyService.findEmployeesByCompanyId(id);
         //then
-        Assertions.assertEquals(3, company.getEmployees().size());
+        Assertions.assertEquals(3, employees.size());
     }
 
     @Test
@@ -161,7 +160,7 @@ public class CompanyServiceTest {
         );
         when(repository.updateCompany(company)).thenReturn(company);
         //when
-        Company returnValue = companyService.updateCompany(company);
+        Company returnValue = companyService.updateCompanyByID(company);
         //then
         Assertions.assertEquals(1, returnValue.getId());
     }
