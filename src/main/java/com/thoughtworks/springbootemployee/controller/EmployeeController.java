@@ -3,6 +3,8 @@ package com.thoughtworks.springbootemployee.controller;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employee> getEmployeeListByPage(int page, int pageSize) {
+    public Page<Employee> getEmployeeListByPage(int page, int pageSize) {
         return employeeService.getEmployeeByPage(page, pageSize);
     }
 
@@ -47,6 +49,7 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody Employee newEmployee) {
         return employeeService.addEmployee(newEmployee);
     }
@@ -57,7 +60,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public Employee deleteEmployeeByID(@PathVariable int id) {
-        return employeeService.deleteEmployeeByID(id);
+    public void deleteEmployeeByID(@PathVariable int id) {
+        employeeService.deleteEmployeeByID(id);
     }
 }

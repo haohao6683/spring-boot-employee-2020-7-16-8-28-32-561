@@ -2,6 +2,8 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,36 +19,41 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getEmployeeList() {
-        return repository.getAllData();
+        return repository.findAll();
     }
 
     @Override
-    public Employee getEmployeeById(int id) {
-        return repository.getEmployeeById(id);
+    public Employee getEmployeeById(Integer id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public List<Employee> getEmployeeByPage(int page, int pageSize) {
-        return repository.getEmployeeByPage(page, pageSize);
+    public Page<Employee> getEmployeeByPage(int page, int pageSize) {
+        return repository.findAll(PageRequest.of(page-1, pageSize));
     }
 
     @Override
     public List<Employee> getEmployeeByGender(String gender) {
-        return repository.getEmployeeByGender(gender);
+        return repository.findByGender(gender);
     }
 
     @Override
     public Employee addEmployee(Employee employee) {
-        return repository.addEmployee(employee);
+        return repository.save(employee);
     }
 
     @Override
-    public Employee updateEmployeeByID(int id, Employee newEmployee) {
-        return repository.updateEmployeeByID(id, newEmployee);
+    public Employee updateEmployeeByID(Integer id, Employee newEmployee) {
+        Employee employee = this.getEmployeeById(id);
+        employee.setAge(newEmployee.getAge());
+        employee.setGender(newEmployee.getGender());
+        employee.setName(newEmployee.getName());
+        employee.setSalary(newEmployee.getSalary());
+        return repository.save(employee);
     }
 
     @Override
-    public Employee deleteEmployeeByID(int id) {
-        return repository.deleteEmployeeByID(id);
+    public void deleteEmployeeByID(Integer id) {
+        repository.deleteById(id);
     }
 }
