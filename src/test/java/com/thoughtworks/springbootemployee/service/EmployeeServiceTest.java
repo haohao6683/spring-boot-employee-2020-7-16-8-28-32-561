@@ -102,4 +102,16 @@ public class EmployeeServiceTest {
         //then
         Assertions.assertEquals("male", returnValue.getGender());
     }
+
+    @Test
+    void should_return_deleted_employee_when_delete_employee_given_employee_id() {
+        //given
+        int id = 1;
+        Employee employee = new Employee(1, 28, "male", "Draymond1", 20);
+        when(repository.deleteEmployeeByID(id)).thenReturn(employee);
+        //when
+        Employee returnValue = employeeService.deleteEmployeeByID(id);
+        //then
+        Assertions.assertEquals(id, returnValue.getId());
+    }
 }
