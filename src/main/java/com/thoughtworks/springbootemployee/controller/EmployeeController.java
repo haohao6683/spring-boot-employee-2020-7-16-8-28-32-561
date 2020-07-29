@@ -34,8 +34,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public Employee getEmployeeByID(@PathVariable int id) {
-        //todo orelse
-        return getEmployeeList().stream().filter(employee -> employee.getId() == id).findFirst().get();
+        return employeeService.getEmployeeById(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
