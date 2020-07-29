@@ -1,12 +1,15 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CompanyServiceImpl implements CompanyService{
     private CompanyRepository repository;
 
@@ -22,6 +25,11 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public Company findById(Integer id) {
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Employee> findEmployeesByCompanyId(Integer id) {
+        return findById(id).getEmployees();
     }
 
     @Override

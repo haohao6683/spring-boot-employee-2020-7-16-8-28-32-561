@@ -1,14 +1,18 @@
 package com.thoughtworks.springbootemployee.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Company {
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String companyName;
 
     private Integer employeeNumber;
-
+    @OneToMany
     private List<Employee> employees;
 
     public Company() {
@@ -21,13 +25,6 @@ public class Company {
         this.employees = employees;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getCompanyName() {
         return companyName;
@@ -51,5 +48,13 @@ public class Company {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
