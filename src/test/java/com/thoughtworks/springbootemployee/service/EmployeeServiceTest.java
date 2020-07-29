@@ -61,4 +61,16 @@ public class EmployeeServiceTest {
         Assertions.assertEquals(pageSize,employees.size());
         Assertions.assertEquals(firstEmployeeIdInPage1, employees.get(0).getId());
     }
+
+    @Test
+    void should_return_employees_when_query_by_gender_given_gender() {
+        //given
+        String gender = "male";
+        //when
+        List<Employee> employees = employeeService.getEmployeeByGender(gender);
+        //then
+        for(Employee employee:employees){
+            Assertions.assertEquals(gender,employee.getGender());
+        }
+    }
 }
