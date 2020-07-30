@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Page<Employee> getEmployeeByPage(int page, int pageSize) {
-        return repository.findAll(PageRequest.of(page-1, pageSize));
+        return repository.findAll(PageRequest.of(page, pageSize));
     }
 
     @Override
@@ -45,15 +46,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee updateEmployeeByID(Integer id, Employee newEmployee) {
         Employee employee = this.getEmployeeById(id);
-        employee.setAge(newEmployee.getAge());
-        employee.setGender(newEmployee.getGender());
-        employee.setName(newEmployee.getName());
-        employee.setSalary(newEmployee.getSalary());
-        return repository.save(employee);
+        if (employee != null) {
+            BeanUtils.copyProperties(newEmployee, employee);
+            return repository.save(employee);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void deleteEmployeeByID(Integer id) {
-        repository.deleteById(id);
+    public Boolean deleteEmployeeByID(Integer id) {
+        Employee employee = this.getEmployeeById(id);
+        if (employee == null) {
+            return false;
+        } else {
+            repository.deleteById(id);
+            return true;
+        }
     }
 }

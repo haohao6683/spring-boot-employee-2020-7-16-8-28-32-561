@@ -3,13 +3,17 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -60,7 +64,7 @@ public class CompanyServiceTest {
     void should_return_company_when_get_given_companyId() {
         //given
         Integer id = 1;
-        when(repository.findById(id)).thenReturn(new Company(1,
+        when(repository.findById(id)).thenReturn(java.util.Optional.of(new Company(1,
                 "OOCL",
                 1,
                 Arrays.asList(
@@ -68,7 +72,7 @@ public class CompanyServiceTest {
                         new Employee(2, 28, "male", "OOCL2", 1000),
                         new Employee(3, 28, "male", "OOCL3", 1000)
                 )
-        ));
+        )));
         //when
         Company company = companyService.findById(id);
         //then
@@ -100,9 +104,9 @@ public class CompanyServiceTest {
                         new Employee(3, 28, "male", "OOCL3", 1000)
                 )
         ));
-        when(repository.findAllByPage(page, pageSize)).thenReturn(mockedCompanies);
+        when(repository.findAll(PageRequest.of(page, pageSize))).thenReturn(new PageImpl<>(mockedCompanies));
         //when
-        List<Company> companies = companyService.getCompaniesByPage(page, pageSize);
+        List<Company> companies = companyService.getCompaniesByPage(page, pageSize).getContent();
         //then
         Assertions.assertEquals(pageSize, companies.size());
         Assertions.assertEquals(firstCompanyIdInPage1, companies.get(0).getId());
@@ -112,7 +116,7 @@ public class CompanyServiceTest {
     void should_return_employees_when_get_given_companyId() {
         //given
         Integer id = 1;
-        when(repository.findById(id)).thenReturn(new Company(1,
+        when(repository.findById(id)).thenReturn(java.util.Optional.of(new Company(1,
                 "OOCL",
                 1,
                 Arrays.asList(
@@ -120,7 +124,7 @@ public class CompanyServiceTest {
                         new Employee(2, 28, "male", "OOCL2", 1000),
                         new Employee(3, 28, "male", "OOCL3", 1000)
                 )
-        ));
+        )));
         //when
         List<Employee> employees= companyService.findEmployeesByCompanyId(id);
         //then
@@ -158,17 +162,27 @@ public class CompanyServiceTest {
                         new Employee(3, 28, "male", "OOCL3", 1000)
                 )
         );
-        when(repository.updateCompany(company)).thenReturn(company);
+        Company updateCompany = new Company(1,
+                "OOIL",
+                20,
+                Arrays.asList(
+                        new Employee(1, 28, "male", "OOCL1", 1000),
+                        new Employee(2, 28, "male", "OOCL2", 1000),
+                        new Employee(3, 28, "male", "OOCL3", 1000)
+                )
+        );
+        when(repository.findById(1)).thenReturn(java.util.Optional.of(company));
+        when(repository.save(company)).thenReturn(company);
         //when
-        Company returnValue = companyService.updateCompanyByID(company);
+        Company returnValue = companyService.updateCompanyByID(1, updateCompany);
         //then
         Assertions.assertEquals(1, returnValue.getId());
+        Assertions.assertEquals(company, returnValue);
     }
 
     @Test
     void should_return_deleted_company_when_delete_company_given_company_id() {
         //given
-        Integer id = 1;
         Company company = new Company(1,
                 "OOCL",
                 1,
@@ -178,10 +192,14 @@ public class CompanyServiceTest {
                         new Employee(3, 28, "male", "OOCL3", 1000)
                 )
         );
-        when(repository.deleteById(id)).thenReturn(company);
+        //given
+        CompanyRepository mockCompanyReposition = mock(CompanyRepository.class);
+        CompanyServiceImpl companyService = new CompanyServiceImpl(mockCompanyReposition);
+        given(mockCompanyReposition.findById(1)).willReturn(java.util.Optional.of(company));
+        Integer id = 1;
         //when
-        Company returnValue = companyService.deleteEmployeeByID(id);
+        companyService.deleteCompanyByID(id);
         //then
-        Assertions.assertEquals(id, returnValue.getId());
+        Mockito.verify(mockCompanyReposition).deleteById(1);
     }
 }

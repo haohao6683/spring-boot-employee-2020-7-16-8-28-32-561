@@ -12,7 +12,7 @@ public class Company {
     private String companyName;
 
     private Integer employeeNumber;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Employee> employees;
 
     public Company() {

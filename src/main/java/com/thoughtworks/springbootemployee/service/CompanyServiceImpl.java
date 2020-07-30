@@ -34,7 +34,7 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public Page<Company> getCompaniesByPage(int page, int pageSize) {
-        return repository.findAll(PageRequest.of(page-1, pageSize));
+        return repository.findAll(PageRequest.of(page, pageSize));
     }
 
     @Override
@@ -53,6 +53,7 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public void deleteCompanyByID(Integer id) {
+        //todo delete employee too.
         repository.deleteById(id);
     }
 }

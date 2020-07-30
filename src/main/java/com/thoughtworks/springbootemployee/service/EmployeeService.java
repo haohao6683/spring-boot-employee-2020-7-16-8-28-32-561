@@ -18,5 +18,5 @@ public interface EmployeeService {
 
     Employee updateEmployeeByID(Integer id, Employee newEmployee);
 
-    void deleteEmployeeByID(Integer id);
+    Boolean deleteEmployeeByID(Integer id);
 }
