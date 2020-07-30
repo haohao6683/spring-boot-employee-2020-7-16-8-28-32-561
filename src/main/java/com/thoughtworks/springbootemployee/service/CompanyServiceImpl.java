@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -45,15 +46,22 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public Company updateCompanyByID(Integer id, Company newCompany) {
         Company company = this.findById(id);
-        company.setEmployees(newCompany.getEmployees());
-        company.setCompanyName(newCompany.getCompanyName());
-        company.setEmployeeNumber(newCompany.getEmployeeNumber());
-        return repository.save(company);
+        if (company != null) {
+            BeanUtils.copyProperties(newCompany, company);
+            return repository.save(company);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void deleteCompanyByID(Integer id) {
-        //todo delete employee too.
-        repository.deleteById(id);
+    public Boolean deleteCompanyByID(Integer id) {
+        Company company = this.findById(id);
+        if (company != null) {
+            repository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

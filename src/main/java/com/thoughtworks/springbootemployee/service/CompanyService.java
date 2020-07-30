@@ -20,5 +20,5 @@ public interface CompanyService {
 
     Company updateCompanyByID(Integer id, Company newCompany);
 
-    void deleteCompanyByID(Integer id);
+    Boolean deleteCompanyByID(Integer id);
 }
