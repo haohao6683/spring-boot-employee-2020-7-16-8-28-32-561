@@ -10,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -69,6 +72,23 @@ public class EmployeeIntegrationTest {
 
     }
 
+    @Test
+    void should_return_employees_when_page_query_given_page_pag() throws Exception {
+        //given
+        Employee employeeA = new Employee(1, 28, "male", "Draymond1", 1000);
+        Employee employeeB = new Employee(2, 28, "male", "Draymond2", 1020);
+        List<Employee> employees = Arrays.asList(employeeA, employeeB);
+        Employee employee1 = employeeRepository.save(employeeA);
+        Employee employee2 = employeeRepository.save(employeeB);
 
+        //when then
+        mockMvc.perform(get("/employees?page=0&pageSize=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").isNumber())
+                .andExpect(jsonPath("$.content[0].age").value(28))
+                .andExpect(jsonPath("$.content[0].gender").value("male"))
+                .andExpect(jsonPath("$.content[0].name").value("Draymond1"))
+                .andExpect(jsonPath("$.content[0].salary").value(1000));
+    }
 }
 
