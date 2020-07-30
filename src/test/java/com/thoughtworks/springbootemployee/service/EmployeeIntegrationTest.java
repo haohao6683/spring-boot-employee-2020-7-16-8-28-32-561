@@ -130,5 +130,38 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.name").value("baidu1"))
                 .andExpect(jsonPath("$.salary").value(1000));
     }
+
+    @Test
+    void should_return_updated_employee_when_update_employee_given_employee() throws Exception {
+        Employee employee = new Employee(1, 28, "male", "Draymond1", 1000);
+        Employee saveEmployee = employeeRepository.save(employee);
+        String employeeInformation = "{\n" +
+                "    \"id\": " + saveEmployee.getId() + ",\n" +
+                "    \"age\": 28,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"name\": \"baidu12\",\n" +
+                "    \"salary\": 1000\n" +
+                "}";
+
+        //when then
+        mockMvc.perform(put("/employees/" + saveEmployee.getId())
+                .contentType(MediaType.APPLICATION_JSON).content(employeeInformation))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.age").value(28))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.name").value("baidu12"))
+                .andExpect(jsonPath("$.salary").value(1000));
+    }
+
+    @Test
+    void should_return_boolean_when_delete_employee_by_id_given_id() throws Exception {
+        Employee employee = new Employee(1, 28, "male", "Draymond1", 1000);
+        Employee saveEmployee = employeeRepository.save(employee);
+
+        mockMvc.perform(delete("/employees/" + saveEmployee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(true));
+    }
 }
 
