@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,6 +141,39 @@ public class CompanyIntegrationTest {
         //when then
         mockMvc.perform(post("/companies")
                 .contentType(MediaType.APPLICATION_JSON).content(savedCompany))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.companyName").value("baidu"))
+                .andExpect(jsonPath("$.employeeNumber").value(1))
+                .andExpect(jsonPath("$.employees").value(new ArrayList<>()));
+    }
+
+    @Test
+    void should_return_company_when_update_company_information_given_id_and_company_information() throws Exception {
+        //given
+        List<Employee> employees = Arrays.asList(
+                new Employee(1, 28, "male", "OOCL1", 1000),
+                new Employee(2, 28, "male", "OOCL2", 1000),
+                new Employee(3, 28, "male", "OOCL3", 1000)
+        );
+        Company company = new Company(1,
+                "OOCL",
+                1,
+                employees
+        );
+        Company savedCompany = companyRepository.save(company);
+
+        String updatedCompany = "{\n" +
+                "        \"companyName\": \"baidu\",\n" +
+                "        \"employeeNumber\": 1,\n" +
+                "        \"employees\": [\n" +
+                "            \n" +
+                "        ]\n" +
+                "    }";
+
+        //when then
+        mockMvc.perform(put("/companies/" + savedCompany.getId())
+                .contentType(MediaType.APPLICATION_JSON).content(updatedCompany))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("baidu"))
