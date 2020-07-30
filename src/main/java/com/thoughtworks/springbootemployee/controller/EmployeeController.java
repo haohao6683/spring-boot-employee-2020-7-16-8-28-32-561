@@ -1,8 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.service.EmployeeServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    @Autowired
-    private EmployeeServiceImpl employeeService;
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
 
     private List<Employee> initEmployeeList() {
@@ -60,7 +62,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployeeByID(@PathVariable int id) {
-        employeeService.deleteEmployeeByID(id);
+    public Boolean deleteEmployeeByID(@PathVariable int id) {
+        return employeeService.deleteEmployeeByID(id);
     }
 }
