@@ -8,12 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -123,5 +126,26 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.content[0].companyName").value("OOCL"))
                 .andExpect(jsonPath("$.content[0].employeeNumber").value(1))
                 .andExpect(jsonPath("$.content[0].employees[0].name").value("OOCL1"));
+    }
+
+    @Test
+    void should_return_company_when_add_company_given_company() throws Exception {
+        //given
+        String savedCompany = "{\n" +
+                "        \"companyName\": \"baidu\",\n" +
+                "        \"employeeNumber\": 1,\n" +
+                "        \"employees\": [\n" +
+                "            \n" +
+                "        ]\n" +
+                "    }";
+
+        //when then
+        mockMvc.perform(post("/companies")
+                .contentType(MediaType.APPLICATION_JSON).content(savedCompany))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.companyName").value("baidu"))
+                .andExpect(jsonPath("$.employeeNumber").value(1))
+                .andExpect(jsonPath("$.employees").value(new ArrayList<>()));
     }
 }
