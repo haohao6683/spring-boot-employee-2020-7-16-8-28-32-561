@@ -180,4 +180,26 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employeeNumber").value(1))
                 .andExpect(jsonPath("$.employees").value(new ArrayList<>()));
     }
+
+    @Test
+    void should_return_boolean_when_delete_company_by_id_given_id() throws Exception {
+        //given
+        Integer id = 1;
+        List<Employee> employees = Arrays.asList(
+                new Employee(1, 28, "male", "OOCL1", 1000),
+                new Employee(2, 28, "male", "OOCL2", 1000),
+                new Employee(3, 28, "male", "OOCL3", 1000)
+        );
+        Company company = new Company(1,
+                "OOCL",
+                1,
+                employees
+        );
+        Company savedCompany = companyRepository.save(company);
+
+        //when  then
+        mockMvc.perform(delete("/companies/" + savedCompany.getId()))
+                .andExpect(status().isOk());
+//                .andExpect(jsonPath("$").value(true));
+    }
 }
