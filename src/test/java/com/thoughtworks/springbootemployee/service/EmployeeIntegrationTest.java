@@ -74,7 +74,7 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_employees_when_page_query_given_page_pag() throws Exception {
+    void should_return_employees_when_page_query_given_page_and_page_size() throws Exception {
         //given
         Employee employeeA = new Employee(1, 28, "male", "Draymond1", 1000);
         Employee employeeB = new Employee(2, 28, "male", "Draymond2", 1020);

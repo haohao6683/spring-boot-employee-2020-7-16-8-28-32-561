@@ -100,4 +100,28 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[1].name").value("OOCL2"))
                 .andExpect(jsonPath("$[2].name").value("OOCL3"));
     }
+
+    @Test
+    void should_return_companies_when_page_query_given_page_and_page_size() throws Exception {
+        //given
+        List<Employee> employees = Arrays.asList(
+                new Employee(1, 28, "male", "OOCL1", 1000),
+                new Employee(2, 28, "male", "OOCL2", 1000),
+                new Employee(3, 28, "male", "OOCL3", 1000)
+        );
+        Company company = new Company(1,
+                "OOCL",
+                1,
+                employees
+        );
+        Company savedCompany = companyRepository.save(company);
+
+        //when then
+        mockMvc.perform(get("/companies?page=0&pageSize=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").isNumber())
+                .andExpect(jsonPath("$.content[0].companyName").value("OOCL"))
+                .andExpect(jsonPath("$.content[0].employeeNumber").value(1))
+                .andExpect(jsonPath("$.content[0].employees[0].name").value("OOCL1"));
+    }
 }
