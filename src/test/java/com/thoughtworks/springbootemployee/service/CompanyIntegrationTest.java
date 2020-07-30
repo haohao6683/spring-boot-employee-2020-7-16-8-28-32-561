@@ -74,6 +74,30 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("OOCL"))
                 .andExpect(jsonPath("$.employeeNumber").value(1))
-                .andExpect(jsonPath("$..employees[0].name").value("OOCL1"));
+                .andExpect(jsonPath("$.employees[0].name").value("OOCL1"));
+    }
+
+    @Test
+    void should_return_employees_in_company_when_find_employee_in_company_given_id() throws Exception {
+        //given
+        Integer id = 1;
+        List<Employee> employees = Arrays.asList(
+                new Employee(1, 28, "male", "OOCL1", 1000),
+                new Employee(2, 28, "male", "OOCL2", 1000),
+                new Employee(3, 28, "male", "OOCL3", 1000)
+        );
+        Company company = new Company(1,
+                "OOCL",
+                1,
+                employees
+        );
+        Company savedCompany = companyRepository.save(company);
+
+        //when then
+        mockMvc.perform(get("/companies/" + savedCompany.getId() + "/employees"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("OOCL1"))
+                .andExpect(jsonPath("$[1].name").value("OOCL2"))
+                .andExpect(jsonPath("$[2].name").value("OOCL3"));
     }
 }
