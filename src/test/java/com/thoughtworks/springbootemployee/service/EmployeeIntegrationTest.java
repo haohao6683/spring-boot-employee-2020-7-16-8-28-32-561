@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -107,6 +109,27 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].gender").value("male"))
                 .andExpect(jsonPath("$[0].name").value("Draymond1"))
                 .andExpect(jsonPath("$[0].salary").value(1000));
+    }
+
+    @Test
+    void should_return_update_employee_when_add_employee_given_employee() throws Exception {
+        String employeeInformation = "{\n" +
+                "    \"id\": 76,\n" +
+                "    \"age\": 28,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"name\": \"baidu1\",\n" +
+                "    \"salary\": 1000\n" +
+                "}";
+
+        //when then
+        mockMvc.perform(post("/employees")
+                .contentType(MediaType.APPLICATION_JSON).content(employeeInformation))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.age").value(28))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.name").value("baidu1"))
+                .andExpect(jsonPath("$.salary").value(1000));
     }
 }
 
