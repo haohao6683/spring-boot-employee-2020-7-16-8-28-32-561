@@ -44,11 +44,11 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public Company updateCompanyByID(@PathVariable int id, @RequestBody Company newCompany) throws IllegalOperationException {
-        return companyService.updateCompanyByID(id, newCompany);
+        return companyService.updateCompanyById(id, newCompany);
     }
 
     @DeleteMapping("/{id}")
     public void deleteAllEmployeesOfTheCompanyByID(@PathVariable int id) throws IllegalOperationException {
-        companyService.deleteCompanyByID(id);
+        companyService.deleteCompanyById(id);
     }
 }

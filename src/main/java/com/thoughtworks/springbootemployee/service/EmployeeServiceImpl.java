@@ -11,10 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author XIEDR2
+ */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private EmployeeRepository repository;
+    private final EmployeeRepository repository;
 
     public EmployeeServiceImpl(EmployeeRepository repository) {
         this.repository = repository;
@@ -53,8 +56,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployeeByID(Integer id, Employee newEmployee) throws IllegalOperationException {
-        Employee employee = null;
+    public Employee updateEmployeeById(Integer id, Employee newEmployee) throws IllegalOperationException {
+        Employee employee;
         try {
             employee = this.getEmployeeById(id);
         } catch (NoSuchDataException e) {

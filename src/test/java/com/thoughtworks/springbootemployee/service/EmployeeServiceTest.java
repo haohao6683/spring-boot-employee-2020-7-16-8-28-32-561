@@ -18,8 +18,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
-    private EmployeeRepository repository = mock(EmployeeRepository.class);
-    private EmployeeServiceImpl employeeService = new EmployeeServiceImpl(repository);
+    private final EmployeeRepository repository = mock(EmployeeRepository.class);
+    private final EmployeeServiceImpl employeeService = new EmployeeServiceImpl(repository);
 
     @Test
     void should_return_employees_when_get() {
@@ -52,6 +52,7 @@ public class EmployeeServiceTest {
             e.printStackTrace();
         }
         //then
+        assert employee != null;
         Assertions.assertEquals(id, employee.getId());
     }
 
@@ -104,6 +105,7 @@ public class EmployeeServiceTest {
             e.printStackTrace();
         }
         //then
+        assert returnValue != null;
         Assertions.assertEquals(employee.getId(), returnValue.getId());
     }
 
@@ -116,11 +118,12 @@ public class EmployeeServiceTest {
         //when
         Employee returnValue = null;
         try {
-            returnValue = employeeService.updateEmployeeByID(6, employee);
+            returnValue = employeeService.updateEmployeeById(6, employee);
         } catch (IllegalOperationException e) {
             e.printStackTrace();
         }
         //then
+        assert returnValue != null;
         Assertions.assertEquals("male", returnValue.getGender());
     }
 
@@ -156,7 +159,7 @@ public class EmployeeServiceTest {
     @Test
     void should_throw_illegal_exception_when_update_employee_given_no_employee_id() {
         //when then
-        Assertions.assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployeeByID(null, new Employee()));
+        Assertions.assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployeeById(null, new Employee()));
     }
 
     @Test

@@ -20,8 +20,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CompanyServiceTest {
-    private CompanyRepository repository = mock(CompanyRepository.class);
-    private CompanyServiceImpl companyService = new CompanyServiceImpl(repository);
+    private final CompanyRepository repository = mock(CompanyRepository.class);
+    private final CompanyServiceImpl companyService = new CompanyServiceImpl(repository);
+
     @Test
     void should_return_companies_when_get() {
         //given
@@ -83,6 +84,7 @@ public class CompanyServiceTest {
             e.printStackTrace();
         }
         //then
+        assert company != null;
         Assertions.assertEquals(id, company.getId());
     }
 
@@ -140,6 +142,7 @@ public class CompanyServiceTest {
             e.printStackTrace();
         }
         //then
+        assert employees != null;
         Assertions.assertEquals(3, employees.size());
     }
 
@@ -164,6 +167,7 @@ public class CompanyServiceTest {
             e.printStackTrace();
         }
         //then
+        assert returnValue != null;
         Assertions.assertEquals(company.getId(), returnValue.getId());
     }
 
@@ -193,11 +197,12 @@ public class CompanyServiceTest {
         //when
         Company returnValue = null;
         try {
-            returnValue = companyService.updateCompanyByID(1, updateCompany);
+            returnValue = companyService.updateCompanyById(1, updateCompany);
         } catch (IllegalOperationException e) {
             e.printStackTrace();
         }
         //then
+        assert returnValue != null;
         Assertions.assertEquals(1, returnValue.getId());
         Assertions.assertEquals(company, returnValue);
     }
@@ -221,7 +226,7 @@ public class CompanyServiceTest {
         Integer id = 1;
         //when
         try {
-            companyService.deleteCompanyByID(id);
+            companyService.deleteCompanyById(id);
         } catch (IllegalOperationException e) {
             e.printStackTrace();
         }
@@ -244,12 +249,12 @@ public class CompanyServiceTest {
     @Test
     void should_throw_illegal_exception_when_update_company_given_no_company_id() {
         //when then
-        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.updateCompanyByID(null, new Company()));
+        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.updateCompanyById(null, new Company()));
     }
 
     @Test
     void should_throw_illegal_exception_when_delete_company_given_no_company_id() {
         //when then
-        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.deleteCompanyByID(null));
+        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.deleteCompanyById(null));
     }
 }

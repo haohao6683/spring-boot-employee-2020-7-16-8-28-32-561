@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author XIEDR2
+ */
 @Service
 public class CompanyServiceImpl implements CompanyService{
-    private CompanyRepository repository;
+    private final CompanyRepository repository;
 
     public CompanyServiceImpl(CompanyRepository repository) {
         this.repository = repository;
@@ -57,8 +60,8 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company updateCompanyByID(Integer id, Company newCompany) throws IllegalOperationException {
-        Company company = null;
+    public Company updateCompanyById(Integer id, Company newCompany) throws IllegalOperationException {
+        Company company;
         try {
             company = this.findById(id);
         } catch (NoSuchDataException e) {
@@ -69,9 +72,9 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public void deleteCompanyByID(Integer id) throws IllegalOperationException {
+    public void deleteCompanyById(Integer id) throws IllegalOperationException {
         try {
-            Company company = this.findById(id);
+            this.findById(id);
         } catch (NoSuchDataException e) {
             throw new IllegalOperationException();
         }
