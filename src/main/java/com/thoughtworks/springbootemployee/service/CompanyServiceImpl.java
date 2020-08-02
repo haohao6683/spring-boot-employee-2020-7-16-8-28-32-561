@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.Exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -24,13 +26,21 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company findById(Integer id) {
-        return repository.findById(id).orElse(null);
+    public Company findById(Integer id) throws NoSuchDataException {
+        Company company = repository.findById(id).orElse(null);
+        if (company == null) {
+            throw new NoSuchDataException();
+        }
+        return company;
     }
 
     @Override
-    public List<Employee> findEmployeesByCompanyId(Integer id) {
-        return findById(id).getEmployees();
+    public List<Employee> findEmployeesByCompanyId(Integer id) throws NoSuchDataException {
+        Company company = findById(id);
+        if (company == null) {
+            throw new NoSuchDataException();
+        }
+        return company.getEmployees();
     }
 
     @Override
@@ -39,29 +49,32 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company addCompany(Company company) {
+    public Company addCompany(Company company) throws IllegalOperationException {
+        if (company == null) {
+            throw new IllegalOperationException();
+        }
         return repository.save(company);
     }
 
     @Override
-    public Company updateCompanyByID(Integer id, Company newCompany) {
-        Company company = this.findById(id);
-        if (company != null) {
-            BeanUtils.copyProperties(newCompany, company);
-            return repository.save(company);
-        } else {
-            return null;
+    public Company updateCompanyByID(Integer id, Company newCompany) throws IllegalOperationException {
+        Company company = null;
+        try {
+            company = this.findById(id);
+        } catch (NoSuchDataException e) {
+            throw new IllegalOperationException();
         }
+        BeanUtils.copyProperties(newCompany, company);
+        return repository.save(company);
     }
 
     @Override
-    public Boolean deleteCompanyByID(Integer id) {
-        Company company = this.findById(id);
-        if (company != null) {
-            repository.deleteById(id);
-            return true;
-        } else {
-            return false;
+    public void deleteCompanyByID(Integer id) throws IllegalOperationException {
+        try {
+            Company company = this.findById(id);
+        } catch (NoSuchDataException e) {
+            throw new IllegalOperationException();
         }
+        repository.deleteById(id);
     }
 }
