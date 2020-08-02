@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.Exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Assertions;
@@ -43,7 +45,12 @@ public class EmployeeServiceTest {
         Integer id = 1;
         when(repository.findById(id)).thenReturn(java.util.Optional.of(new Employee(1, 28, "male", "Draymond1", 1000)));
         //when
-        Employee employee = employeeService.getEmployeeById(id);
+        Employee employee = null;
+        try {
+            employee = employeeService.getEmployeeById(id);
+        } catch (NoSuchDataException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals(id, employee.getId());
     }
@@ -90,7 +97,12 @@ public class EmployeeServiceTest {
         Employee employee = new Employee(6, 28, "male", "Draymond6", 20);
         when(repository.save(employee)).thenReturn(employee);
         //when
-        Employee returnValue = employeeService.addEmployee(employee);
+        Employee returnValue = null;
+        try {
+            returnValue = employeeService.addEmployee(employee);
+        } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals(employee.getId(), returnValue.getId());
     }
@@ -102,7 +114,12 @@ public class EmployeeServiceTest {
         when(repository.save(employee)).thenReturn(employee);
         given(repository.findById(6)).willReturn(java.util.Optional.of(employee));
         //when
-        Employee returnValue = employeeService.updateEmployeeByID(6, employee);
+        Employee returnValue = null;
+        try {
+            returnValue = employeeService.updateEmployeeByID(6, employee);
+        } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals("male", returnValue.getGender());
     }
@@ -115,8 +132,36 @@ public class EmployeeServiceTest {
         given(mockEmployeeReposition.findById(1)).willReturn(java.util.Optional.of(new Employee(1, 28, "male", "dray", 2222)));
         Integer id = 1;
         //when
-        employeeService.deleteEmployeeByID(id);
+        try {
+            employeeService.deleteEmployeeByID(id);
+        } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        }
         //then
         Mockito.verify(mockEmployeeReposition).deleteById(1);
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_search_given_no_employee_id() {
+        //when then
+        Assertions.assertThrows(NoSuchDataException.class, () -> employeeService.getEmployeeById(null));
+    }
+
+    @Test
+    void should_throw_illegal_exception_when_add_employee_given_no_employee() {
+        //when then
+        Assertions.assertThrows(IllegalOperationException.class, () -> employeeService.addEmployee(null));
+    }
+
+    @Test
+    void should_throw_illegal_exception_when_update_employee_given_no_employee_id() {
+        //when then
+        Assertions.assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployeeByID(null, new Employee()));
+    }
+
+    @Test
+    void should_throw_illegal_exception_when_delete_employee_given_no_employee_id() {
+        //when then
+        Assertions.assertThrows(IllegalOperationException.class, () -> employeeService.deleteEmployeeByID(null));
     }
 }
