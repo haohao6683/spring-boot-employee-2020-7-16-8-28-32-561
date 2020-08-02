@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.Exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -74,7 +76,12 @@ public class CompanyServiceTest {
                 )
         )));
         //when
-        Company company = companyService.findById(id);
+        Company company = null;
+        try {
+            company = companyService.findById(id);
+        } catch (NoSuchDataException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals(id, company.getId());
     }
@@ -126,7 +133,12 @@ public class CompanyServiceTest {
                 )
         )));
         //when
-        List<Employee> employees= companyService.findEmployeesByCompanyId(id);
+        List<Employee> employees = null;
+        try {
+            employees = companyService.findEmployeesByCompanyId(id);
+        } catch (NoSuchDataException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals(3, employees.size());
     }
@@ -145,7 +157,12 @@ public class CompanyServiceTest {
         );
         when(repository.save(company)).thenReturn(company);
         //when
-        Company returnValue = companyService.addCompany(company);
+        Company returnValue = null;
+        try {
+            returnValue = companyService.addCompany(company);
+        } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals(company.getId(), returnValue.getId());
     }
@@ -174,7 +191,12 @@ public class CompanyServiceTest {
         when(repository.findById(1)).thenReturn(java.util.Optional.of(company));
         when(repository.save(company)).thenReturn(company);
         //when
-        Company returnValue = companyService.updateCompanyByID(1, updateCompany);
+        Company returnValue = null;
+        try {
+            returnValue = companyService.updateCompanyByID(1, updateCompany);
+        } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        }
         //then
         Assertions.assertEquals(1, returnValue.getId());
         Assertions.assertEquals(company, returnValue);
@@ -198,8 +220,36 @@ public class CompanyServiceTest {
         given(mockCompanyReposition.findById(1)).willReturn(java.util.Optional.of(company));
         Integer id = 1;
         //when
-        companyService.deleteCompanyByID(id);
+        try {
+            companyService.deleteCompanyByID(id);
+        } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        }
         //then
         Mockito.verify(mockCompanyReposition).deleteById(1);
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_search_given_no_company_id() {
+        //when then
+        Assertions.assertThrows(NoSuchDataException.class, () -> companyService.findById(null));
+    }
+
+    @Test
+    void should_throw_illegal_exception_when_add_company_given_no_company() {
+        //when then
+        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.addCompany(null));
+    }
+
+    @Test
+    void should_throw_illegal_exception_when_update_company_given_no_company_id() {
+        //when then
+        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.updateCompanyByID(null, new Company()));
+    }
+
+    @Test
+    void should_throw_illegal_exception_when_delete_company_given_no_company_id() {
+        //when then
+        Assertions.assertThrows(IllegalOperationException.class, () -> companyService.deleteCompanyByID(null));
     }
 }
