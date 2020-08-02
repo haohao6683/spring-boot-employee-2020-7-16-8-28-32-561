@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.Exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
@@ -24,8 +26,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Integer id) {
-        return repository.findById(id).orElse(null);
+    public Employee getEmployeeById(Integer id) throws NoSuchDataException {
+        Employee employee = repository.findById(id).orElse(null);
+        if (employee == null) {
+            throw new NoSuchDataException();
+        }
+        return employee;
     }
 
     @Override
@@ -39,29 +45,32 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee addEmployee(Employee employee) {
+    public Employee addEmployee(Employee employee) throws IllegalOperationException {
+        if (employee == null) {
+            throw new IllegalOperationException();
+        }
         return repository.save(employee);
     }
 
     @Override
-    public Employee updateEmployeeByID(Integer id, Employee newEmployee) {
-        Employee employee = this.getEmployeeById(id);
-        if (employee != null) {
-            BeanUtils.copyProperties(newEmployee, employee);
-            return repository.save(employee);
-        } else {
-            return null;
+    public Employee updateEmployeeByID(Integer id, Employee newEmployee) throws IllegalOperationException {
+        Employee employee = null;
+        try {
+            employee = this.getEmployeeById(id);
+        } catch (NoSuchDataException e) {
+            throw new IllegalOperationException();
         }
+        BeanUtils.copyProperties(newEmployee, employee);
+        return repository.save(employee);
     }
 
     @Override
-    public Boolean deleteEmployeeByID(Integer id) {
-        Employee employee = this.getEmployeeById(id);
-        if (employee == null) {
-            return false;
-        } else {
-            repository.deleteById(id);
-            return true;
+    public void deleteEmployeeByID(Integer id) throws IllegalOperationException {
+        try {
+            this.getEmployeeById(id);
+        } catch (NoSuchDataException e) {
+            throw new IllegalOperationException();
         }
+        repository.deleteById(id);
     }
 }
