@@ -46,12 +46,12 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeByID(@PathVariable int id, @RequestBody Employee newEmployee) throws IllegalOperationException {
+    public Employee updateEmployeeByID(@PathVariable int id, @RequestBody Employee newEmployee) throws Exception {
         return employeeService.updateEmployeeById(id, newEmployee);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployeeByID(@PathVariable int id) throws IllegalOperationException {
+    public void deleteEmployeeByID(@PathVariable int id) throws Exception {
         employeeService.deleteEmployeeByID(id);
     }
 }

@@ -43,12 +43,12 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public Company updateCompanyByID(@PathVariable int id, @RequestBody Company newCompany) throws IllegalOperationException {
+    public Company updateCompanyByID(@PathVariable int id, @RequestBody Company newCompany) throws Exception {
         return companyService.updateCompanyById(id, newCompany);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAllEmployeesOfTheCompanyByID(@PathVariable int id) throws IllegalOperationException {
+    public void deleteAllEmployeesOfTheCompanyByID(@PathVariable int id) throws Exception {
         companyService.deleteCompanyById(id);
     }
 }
