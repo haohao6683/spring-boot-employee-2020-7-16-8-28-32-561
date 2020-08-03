@@ -22,5 +22,5 @@ public interface CompanyService {
 
     Company updateCompanyById(Integer id, Company newCompany) throws Exception;
 
-    void deleteCompanyById(Integer id) throws IllegalOperationException;
+    void deleteCompanyById(Integer id) throws Exception;
 }

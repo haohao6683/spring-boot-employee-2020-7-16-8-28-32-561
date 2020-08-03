@@ -70,10 +70,8 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public void deleteCompanyById(Integer id) throws IllegalOperationException {
-        try {
-            this.findById(id);
-        } catch (NoSuchDataException e) {
+    public void deleteCompanyById(Integer id) throws Exception {
+        if (this.findById(id) == null) {
             throw new IllegalOperationException();
         }
         repository.deleteById(id);
