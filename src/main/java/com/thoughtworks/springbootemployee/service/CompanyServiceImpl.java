@@ -60,13 +60,11 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company updateCompanyById(Integer id, Company newCompany) throws IllegalOperationException {
-        Company company;
-        try {
-            company = this.findById(id);
-        } catch (NoSuchDataException e) {
+    public Company updateCompanyById(Integer id, Company newCompany) throws Exception {
+        if (!id.equals(newCompany.getId())) {
             throw new IllegalOperationException();
         }
+        Company company = this.findById(id);
         BeanUtils.copyProperties(newCompany, company);
         return repository.save(company);
     }

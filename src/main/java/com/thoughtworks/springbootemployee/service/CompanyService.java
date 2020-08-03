@@ -20,7 +20,7 @@ public interface CompanyService {
 
     Company addCompany(Company company) throws IllegalOperationException;
 
-    Company updateCompanyById(Integer id, Company newCompany) throws IllegalOperationException;
+    Company updateCompanyById(Integer id, Company newCompany) throws Exception;
 
     void deleteCompanyById(Integer id) throws IllegalOperationException;
 }
