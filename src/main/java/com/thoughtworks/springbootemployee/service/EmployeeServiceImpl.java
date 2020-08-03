@@ -56,13 +56,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployeeById(Integer id, Employee newEmployee) throws IllegalOperationException {
-        Employee employee;
-        try {
-            employee = this.getEmployeeById(id);
-        } catch (NoSuchDataException e) {
+    public Employee updateEmployeeById(Integer id, Employee newEmployee) throws Exception {
+        if (!id.equals(newEmployee.getId())) {
             throw new IllegalOperationException();
         }
+        Employee employee = this.getEmployeeById(id);
         BeanUtils.copyProperties(newEmployee, employee);
         return repository.save(employee);
     }
