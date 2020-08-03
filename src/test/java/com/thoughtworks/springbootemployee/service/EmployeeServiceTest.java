@@ -119,7 +119,7 @@ public class EmployeeServiceTest {
         Employee returnValue = null;
         try {
             returnValue = employeeService.updateEmployeeById(6, employee);
-        } catch (IllegalOperationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //then
@@ -137,7 +137,7 @@ public class EmployeeServiceTest {
         //when
         try {
             employeeService.deleteEmployeeByID(id);
-        } catch (IllegalOperationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //then

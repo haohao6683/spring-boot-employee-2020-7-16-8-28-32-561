@@ -198,7 +198,7 @@ public class CompanyServiceTest {
         Company returnValue = null;
         try {
             returnValue = companyService.updateCompanyById(1, updateCompany);
-        } catch (IllegalOperationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //then
@@ -227,7 +227,7 @@ public class CompanyServiceTest {
         //when
         try {
             companyService.deleteCompanyById(id);
-        } catch (IllegalOperationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //then
@@ -237,6 +237,7 @@ public class CompanyServiceTest {
     @Test
     void should_throw_no_such_data_exception_when_search_given_no_company_id() {
         //when then
+        //todo before update
         Assertions.assertThrows(NoSuchDataException.class, () -> companyService.findById(null));
     }
 
