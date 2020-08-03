@@ -20,5 +20,5 @@ public interface EmployeeService {
 
     Employee updateEmployeeById(Integer id, Employee newEmployee) throws Exception;
 
-    void deleteEmployeeByID(Integer id) throws IllegalOperationException;
+    void deleteEmployeeByID(Integer id) throws Exception;
 }

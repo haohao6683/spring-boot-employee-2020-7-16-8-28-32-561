@@ -66,10 +66,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployeeByID(Integer id) throws IllegalOperationException {
-        try {
-            this.getEmployeeById(id);
-        } catch (NoSuchDataException e) {
+    public void deleteEmployeeByID(Integer id) throws Exception {
+        if (this.getEmployeeById(id) == null) {
             throw new IllegalOperationException();
         }
         repository.deleteById(id);
